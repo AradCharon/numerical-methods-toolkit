@@ -1,0 +1,6 @@
+Interpolation Results
+==================================================
+Data Points: [(np.int64(1), np.int64(1)), (np.int64(2), np.int64(3)), (np.int64(3), np.int64(5)), (np.int64(4), np.int64(8)), (np.int64(5), np.int64(5)), (np.int64(6), np.int64(2))]
+
+Lagrange Polynomial:        5         4         3         2
+0.175 x - 2.958 x + 18.38 x - 52.04 x + 68.45 x - 31
