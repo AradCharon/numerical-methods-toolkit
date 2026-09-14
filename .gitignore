@@ -45,3 +45,18 @@ htmlcov/
 # Uncomment if output files should not be tracked
 
 # */output/*
+
+# LaTeX auxiliary files
+*.aux
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.bcf
+*.run.xml
