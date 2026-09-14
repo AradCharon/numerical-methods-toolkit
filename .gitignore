@@ -1,0 +1,47 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+
+.venv/
+venv/
+env/
+
+# IDE
+
+.vscode/
+.idea/
+
+# Jupyter Notebook
+
+.ipynb_checkpoints/
+
+# OS
+
+.DS_Store
+Thumbs.db
+
+# Temporary files
+
+*.tmp
+*.temp
+
+# Python testing / coverage
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Excel temporary files
+
+~$*.xlsx
+*.xlsm
+
+# Generated output files
+
+# Uncomment if output files should not be tracked
+
+# */output/*
