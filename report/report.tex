@@ -1,7 +1,15 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+% Packages
+% ============================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
-\usepackage{hyperref}
 \usepackage{geometry}
 \usepackage{float}
 \usepackage{caption}
@@ -13,323 +21,1474 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{multirow}
+\usepackage{longtable}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{lastpage}
+\usepackage{etoolbox}
 
-\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+% ============================================================
+% Page Layout
+% ============================================================
 
-\definecolor{primary}{RGB}{41,128,185}
-\definecolor{secondary}{RGB}{231,76,60}
-\definecolor{accent}{RGB}{46,204,113}
+\geometry{
+    left=2.6cm,
+    right=2.6cm,
+    top=2.5cm,
+    bottom=2.6cm,
+    headheight=15pt
+}
+
+\onehalfspacing
+
+% ============================================================
+% Colors
+% ============================================================
+
+\definecolor{primary}{RGB}{31,78,121}
+\definecolor{secondary}{RGB}{55,71,79}
+\definecolor{accent}{RGB}{46,125,120}
+\definecolor{lightblue}{RGB}{239,246,252}
+\definecolor{lightgray}{RGB}{245,247,249}
+\definecolor{darkgray}{RGB}{80,90,100}
+
+% ============================================================
+% Hyperlinks (last, to avoid conflicts)
+% ============================================================
+
+\usepackage{hyperref}
 
 \hypersetup{
     colorlinks=true,
     linkcolor=primary,
-    urlcolor=primary,
-    citecolor=primary
+    urlcolor=accent,
+    citecolor=primary,
+    pdftitle={Numerical Methods Project},
+    pdfauthor={Arad Shafiee},
+    pdfsubject={Interpolation, Data Analysis, and Numerical Integration}
 }
+
+% ============================================================
+% Section Formatting
+% ============================================================
 
 \titleformat{\section}
 {\normalfont\Large\bfseries\color{primary}}
-{\thesection}{1em}{}
+{\thesection}{0.8em}{}
 
 \titleformat{\subsection}
-{\normalfont\large\bfseries\color{primary!80}}
-{\thesubsection}{1em}{}
+{\normalfont\large\bfseries\color{secondary}}
+{\thesubsection}{0.8em}{}
+
+\titleformat{\subsubsection}
+{\normalfont\normalsize\bfseries\color{darkgray}}
+{\thesubsubsection}{0.8em}{}
+
+\titlespacing*{\section}{0pt}{3.0ex plus 1ex minus .2ex}{1.5ex}
+\titlespacing*{\subsection}{0pt}{2.2ex plus .7ex minus .2ex}{1.0ex}
+
+% ============================================================
+% Header / Footer
+% ============================================================
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\textcolor{primary}{Mathematical Software - Project}}
-\fancyhead[R]{\thepage}
+
+\fancyhead[L]{
+    \small
+    \textcolor{primary}{
+        \textbf{Numerical Methods Project}
+    }
+}
+
+\fancyhead[R]{
+    \small
+    \textcolor{darkgray}{
+        Mathematical Software
+    }
+}
+
+\fancyfoot[C]{
+    \small
+    \textcolor{darkgray}{
+        \thepage\ / \pageref{LastPage}
+    }
+}
+
 \renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\headrule}{\hbox to\headwidth{\color{primary}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0pt}
 
-\graphicspath{{./}}
+% ============================================================
+% Tables
+% ============================================================
 
-\title{
-    \vspace{1cm}
-    {\Huge \textbf{Numerical Methods Project}} \\
-    \vspace{0.5cm}
-    {\Large Interpolation, Data Analysis, and Numerical Integration} \\
-    \vspace{1.5cm}
+\renewcommand{\arraystretch}{1.25}
+
+% ============================================================
+% Figures
+% ============================================================
+
+\graphicspath{{./}{./images/}}
+
+\captionsetup{
+    font=small,
+    labelfont={bf,color=primary},
+    textfont=it,
+    justification=centering,
+    margin=10pt
 }
-\author{
-    \textbf{Name:} Arad Shafiee \\
-    \textbf{Student ID:} 40312029 \\
-    \textbf{Course:} Mathematical Software \\
-    \textbf{Date:} July 2025 (Tir 1405)
+
+% ============================================================
+% Custom Boxes
+% ============================================================
+
+\newtcolorbox{resultbox}{
+    colback=lightblue,
+    colframe=primary,
+    boxrule=0.7pt,
+    arc=2mm,
+    left=8pt,
+    right=8pt,
+    top=7pt,
+    bottom=7pt
 }
-\date{}
+
+\newtcolorbox{methodbox}{
+    colback=lightgray,
+    colframe=secondary,
+    boxrule=0.5pt,
+    arc=2mm,
+    left=8pt,
+    right=8pt,
+    top=7pt,
+    bottom=7pt
+}
+
+% ============================================================
+% Document
+% ============================================================
 
 \begin{document}
 
-\maketitle
-\thispagestyle{empty}
+% ============================================================
+% COVER PAGE
+% ============================================================
+
+\begin{titlepage}
+    \thispagestyle{empty}
+
+    \begin{center}
+
+        % ---------- Top spacing ----------
+        \vspace*{0.6cm}
+
+        % ---------- University Logo ----------
+        \IfFileExists{aut_logo.png}
+            {\includegraphics[width=3.2cm]{aut_logo.png}}
+            {\fbox{\parbox{3.2cm}{\centering\bfseries LOGO\\NOT FOUND}}}\\[0.4cm]
+
+        % ---------- University name ----------
+        {\Large\scshape Amirkabir University of Technology}\\[0.2cm]
+        {\normalsize\itshape Department of Mathematics and Computer Science}\\[1.4cm]
+
+        % ---------- Thin rule above title ----------
+        \textcolor{accent}{\rule{0.55\textwidth}{0.6pt}}\\[0.45cm]
+
+        % ---------- Main title ----------
+        {\Huge\bfseries\color{primary} Numerical Methods Toolkit}\\[0.3cm]
+        {\large\itshape\color{secondary} Computational Projects in Numerical Analysis}\\[0.45cm]
+
+        % ---------- Thin rule below title ----------
+        \textcolor{accent}{\rule{0.55\textwidth}{0.6pt}}\\[1.2cm]
+
+        % ---------- Project Scope box ----------
+        \begin{tcolorbox}[
+            colback=lightblue,
+            colframe=primary,
+            boxrule=0.6pt,
+            arc=1.5mm,
+            width=0.82\textwidth,
+            left=10pt,
+            right=10pt,
+            top=8pt,
+            bottom=8pt
+        ]
+        \centering
+        {\bfseries\color{primary} Project Scope}\\[0.2cm]
+        {\small
+        Implementation and numerical evaluation of interpolation methods,
+        automated Excel-based data analysis, and numerical integration methods
+        using Python and scientific-computing libraries.}
+        \end{tcolorbox}
+
+        \vspace{1.0cm}
+
+        % ---------- Author information card ----------
+        \begin{tcolorbox}[
+            colback=lightgray,
+            colframe=secondary,
+            boxrule=0.5pt,
+            arc=1.5mm,
+            width=0.62\textwidth,
+            left=12pt,
+            right=12pt,
+            top=9pt,
+            bottom=9pt
+        ]
+        \centering
+        {\small
+        \renewcommand{\arraystretch}{1.35}
+        \begin{tabular}{@{}r@{\hspace{1.2em}}l@{}}
+            \textbf{Name:}       & Arad Shafiee \\[0.1cm]
+            \textbf{Student ID:} & 40312029 \\[0.1cm]
+            \textbf{Course:}     & Mathematical Software \\[0.1cm]
+            \textbf{Date:}       & July 2026 (Tir 1405) \\
+        \end{tabular}}
+        \end{tcolorbox}
+
+        \vspace{0.8cm}
+
+        % ---------- Footer line ----------
+        {\footnotesize\color{darkgray}
+        Numerical Computation \quad$\cdot$\quad Scientific Programming}
+
+    \end{center}
+\end{titlepage}
+
+% ============================================================
+% ABSTRACT
+% ============================================================
+
+\pagenumbering{roman}
+
+\section*{Abstract}
+
+This report presents a computational study of three fundamental areas of
+numerical methods: interpolation, data analysis, and numerical integration.
+The first project compares global polynomial interpolation using the
+Lagrange formulation with a natural cubic spline constructed from the same
+set of observations. The second project develops an automated Python
+workflow for reading algorithm-runtime measurements from an Excel
+spreadsheet, performing descriptive statistical analysis, generating
+multiple visualizations, and extending the dataset with a required
+$700$KB observation. The third project investigates numerical
+approximation of the definite integral
+$\int_0^1 e^{x^2}\,dx$ using the composite trapezoidal rule, composite
+Simpson's rule, and Gauss--Legendre quadrature.
+
+The experiments emphasize not only numerical results but also the
+mathematical properties of the methods, including interpolation conditions,
+smoothness, convergence order, empirical runtime behavior, and numerical
+error. The interpolation experiment demonstrates the distinction between a
+global high-degree polynomial and a locally defined spline representation.
+The runtime analysis illustrates how numerical programming can be combined
+with reproducible data-processing and visualization pipelines. The
+integration experiment shows the faster convergence of Simpson's rule
+relative to the trapezoidal rule and the very high accuracy achievable by
+Gaussian quadrature for a smooth integrand.
+
+All calculations and figures are generated programmatically, providing a
+reproducible computational workflow. The results are interpreted
+conservatively, particularly where the available dataset is insufficient
+to support stronger theoretical conclusions.
+
 \newpage
 
 \tableofcontents
+
 \newpage
 
 \listoffigures
+
 \newpage
 
 \listoftables
+
+\newpage
+
+\pagenumbering{arabic}
+
+% ============================================================
+% 1. INTRODUCTION
+% ============================================================
+
+\section{Introduction}
+
+Numerical analysis provides systematic methods for obtaining approximate
+solutions to mathematical problems that are difficult or impossible to
+solve directly by symbolic means. Its applications extend across
+engineering, physics, computer science, statistics, and applied
+mathematics. Classical numerical techniques include interpolation,
+numerical differentiation and integration, nonlinear equation solving,
+linear algebra, and differential-equation methods
+\cite{burden2010,chapra2015}.
+
+The present project focuses on three computational tasks that illustrate
+different aspects of numerical computation. The first concerns
+interpolation, where an approximation is constructed from discrete data
+points. The second concerns data analysis, where computational methods are
+used to process and visualize measured execution times. The third concerns
+numerical integration, where a definite integral is approximated through
+several quadrature techniques.
+
+The main objectives are:
+
+\begin{enumerate}
+    \item To implement Lagrange polynomial interpolation and natural cubic
+    spline interpolation for a common dataset.
+
+    \item To compare the mathematical structure and numerical behavior of
+    the two interpolation approaches.
+
+    \item To develop a reproducible workflow for reading and analyzing
+    algorithm-runtime data from an Excel spreadsheet.
+
+    \item To use descriptive statistics and multiple visualization methods
+    to investigate empirical runtime behavior.
+
+    \item To implement and compare the composite trapezoidal rule,
+    composite Simpson's rule, and Gauss--Legendre quadrature.
+
+    \item To analyze convergence and numerical error rather than relying
+    solely on a single computed result.
+
+    \item To maintain a reproducible computational project in a
+    version-controlled repository.
+\end{enumerate}
+
+A central principle throughout the project is that numerical results should
+be interpreted in relation to the assumptions and limitations of the
+underlying methods. In particular, empirical observations should not be
+mistaken for formal proofs of asymptotic complexity or exact analytical
+solutions.
+
+% ============================================================
+% 2. COMPUTATIONAL ENVIRONMENT
+% ============================================================
+
+\section{Computational Environment and Reproducibility}
+
+\subsection{Software Stack}
+
+The implementation is developed in Python using standard scientific
+computing and data-analysis libraries.
+
+\begin{table}[H]
+\centering
+\caption{Software Libraries Used in the Project}
+\label{tab:libraries}
+
+\begin{tabular}{>{\bfseries}l l}
+\toprule
+Library & Main Purpose \\
+\midrule
+NumPy & Numerical arrays and mathematical operations \\
+Pandas & Data loading, transformation, and statistical analysis \\
+Matplotlib & Scientific visualization and PDF/PNG figure generation \\
+SciPy & Numerical integration and reference computation \\
+OpenPyXL & Excel workbook support \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Pandas provides the \texttt{read\_excel} interface used to load the Excel
+dataset into a DataFrame \cite{pandas_excel}. Matplotlib's
+\texttt{savefig} interface is used to export generated figures, including
+PDF vector graphics suitable for inclusion in a technical report
+\cite{matplotlib_savefig}.
+
+For the numerical reference value in the integration experiment,
+SciPy's \texttt{scipy.integrate.quad} function is used. The routine
+performs adaptive quadrature through the QUADPACK library and returns both
+an integral estimate and an error estimate \cite{scipy_quad,piessens1983}.
+
+\subsection{Reproducible Workflow}
+
+The project follows a simple reproducible pipeline:
+
+\begin{enumerate}
+    \item Input data are stored separately from source code.
+    \item Numerical calculations are performed programmatically.
+    \item Generated figures and numerical summaries are saved as output
+    artifacts.
+    \item The report incorporates the generated PDF figures directly.
+    \item Source code, input data, outputs, and documentation are managed
+    through Git.
+\end{enumerate}
+
+This organization makes it possible to rerun the experiments and regenerate
+the computational results rather than relying on manually entered values.
+
+% ============================================================
+% 3. PROJECT 1
+% ============================================================
+
 \newpage
 
 \section{Project 1: Interpolation Methods}
 
-\subsection{Introduction}
-This section implements two interpolation methods: Lagrange Interpolation and Cubic Spline Interpolation. These methods approximate functions passing through given discrete data points.
+\subsection{Problem Formulation}
 
-\subsection{Data Points}
-The given data points are shown in Table 1.
+Interpolation estimates the value of a function at points located between
+known observations. Given a set of distinct points
+$(x_i,y_i)$, an interpolation function $F(x)$ is required to satisfy
+
+\[
+F(x_i)=y_i
+\]
+
+at every supplied node.
+
+The dataset used in this experiment is
 
 \begin{table}[H]
 \centering
-\caption{Given Data Points}
-\label{tab:data_points}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
+\caption{Interpolation Dataset}
+\label{tab:interp_data}
+
+\begin{tabular}{c|cccccc}
+\toprule
 $x$ & 1 & 2 & 3 & 4 & 5 & 6 \\
-\hline
+\midrule
 $y$ & 1 & 3 & 5 & 8 & 5 & 2 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Lagrange Interpolation}
-The Lagrange interpolation polynomial is defined as:
+Two interpolation approaches are investigated:
+
+\begin{itemize}
+    \item Lagrange polynomial interpolation.
+    \item Natural cubic spline interpolation.
+\end{itemize}
+
+Classical treatments of interpolation discuss the mathematical properties,
+error behavior, and limitations of polynomial and spline methods
+\cite{burden2010,chapra2015}.
+
+% ------------------------------------------------------------
+% 3.1 LAGRANGE
+% ------------------------------------------------------------
+
+\subsection{Lagrange Polynomial Interpolation}
+
+For $n+1$ distinct nodes, the Lagrange interpolation polynomial is
+
 \[
-P(x) = \sum_{i=0}^{n} y_i L_i(x)
-\]
-where the Lagrange basis polynomials are given by:
-\[
-L_i(x) = \prod_{\substack{j=0 \\ j \neq i}}^{n} \frac{x - x_j}{x_i - x_j}
+P_n(x)
+=
+\sum_{i=0}^{n}
+y_iL_i(x),
 \]
 
-The resulting polynomial of degree 5 is:
+where
+
 \[
-P(x) = -0.7083x^5 + 9.8333x^4 - 50.8333x^3 + 121.1667x^2 - 131.4583x + 53
+L_i(x)
+=
+\prod_{\substack{j=0\\j\neq i}}^{n}
+\frac{x-x_j}{x_i-x_j}.
 \]
 
-\subsection{Cubic Spline Interpolation}
-The natural cubic spline uses piecewise cubic polynomials defined on each interval:
+The basis polynomials satisfy
+
 \[
-S_i(x) = a_i(x-x_i)^3 + b_i(x-x_i)^2 + c_i(x-x_i) + d_i, \quad x \in [x_i, x_{i+1}]
+L_i(x_j)=
+\begin{cases}
+1, & i=j,\\
+0, & i\neq j.
+\end{cases}
 \]
 
-The coefficients for each interval are shown in Table 2.
+Consequently, the resulting polynomial satisfies the interpolation
+conditions exactly.
+
+For the six observations in Table~\ref{tab:interp_data}, the polynomial has
+degree five:
+
+\[
+\boxed{
+P(x)=
+\frac{7}{40}x^5
+-\frac{71}{24}x^4
++\frac{147}{8}x^3
+-\frac{1249}{24}x^2
++\frac{1369}{20}x
+-31
+}
+\]
+
+or numerically,
+
+\[
+\begin{aligned}
+P(x)={}&
+0.1750x^5
+-2.9583x^4
++18.3750x^3\\
+&-52.0417x^2
++68.4500x
+-31.
+\end{aligned}
+\]
+
+The polynomial therefore satisfies
+
+\[
+P(1)=1,\quad
+P(2)=3,\quad
+P(3)=5,\quad
+P(4)=8,\quad
+P(5)=5,\quad
+P(6)=2.
+\]
+
+\begin{resultbox}
+\textbf{Numerical result.}
+The Lagrange implementation produces a fifth-degree polynomial that
+passes exactly through all six supplied interpolation nodes.
+\end{resultbox}
+
+\subsection{Natural Cubic Spline Interpolation}
+
+A cubic spline replaces one global polynomial with a collection of cubic
+polynomials defined on consecutive intervals. For
+$x\in[x_i,x_{i+1}]$,
+
+\[
+S_i(x)
+=
+a_i(x-x_i)^3
++
+b_i(x-x_i)^2
++
+c_i(x-x_i)
++
+d_i.
+\]
+
+A natural cubic spline satisfies interpolation, continuity of the first
+derivative, continuity of the second derivative, and the natural boundary
+conditions
+
+\[
+S''(x_0)=0,
+\qquad
+S''(x_n)=0.
+\]
+
+These conditions produce a smooth piecewise polynomial approximation
+\cite{burden2010,chapra2015}.
+
+The resulting coefficients are given in
+Table~\ref{tab:spline_coefficients}.
 
 \begin{table}[H]
 \centering
-\caption{Cubic Spline Coefficients}
-\label{tab:spline_coeffs}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-\textbf{Interval} & \textbf{$a_i$} & \textbf{$b_i$} & \textbf{$c_i$} & \textbf{$d_i$} \\
-\hline
-$[1,2]$ & 1.0000 & 2.1866 & 0.0000 & -0.1866 \\
-$[2,3]$ & 3.0000 & 1.6268 & -0.5598 & 0.9330 \\
-$[3,4]$ & 5.0000 & 3.3062 & 2.2392 & -2.5455 \\
-$[4,5]$ & 8.0000 & 0.1483 & -5.3971 & 2.2488 \\
-$[5,6]$ & 5.0000 & -3.8995 & 1.3493 & -0.4498 \\
-\hline
+\caption{Natural Cubic Spline Coefficients}
+\label{tab:spline_coefficients}
+
+\begin{tabular}{c|rrrr}
+\toprule
+\textbf{Interval}
+& $\mathbf{a_i}$
+& $\mathbf{b_i}$
+& $\mathbf{c_i}$
+& $\mathbf{d_i}$ \\
+\midrule
+$[1,2]$ & -0.1866 & 0.0000 & 2.1866 & 1.0000 \\
+$[2,3]$ &  0.9330 & -0.5598 & 1.6268 & 3.0000 \\
+$[3,4]$ & -2.5455 & 2.2392 & 3.3062 & 5.0000 \\
+$[4,5]$ &  2.2488 & -5.3971 & 0.1483 & 8.0000 \\
+$[5,6]$ & -0.4498 & 1.3493 & -3.8995 & 5.0000 \\
+\bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Visualization}
-Figure 1 shows the comparison of both interpolation methods.
+For example, on the first interval,
+
+\[
+S_1(x)
+=
+-0.1866(x-1)^3
++
+2.1866(x-1)
++
+1.
+\]
+
+On the second interval,
+
+\[
+S_2(x)
+=
+0.9330(x-2)^3
+-
+0.5598(x-2)^2
++
+1.6268(x-2)
++
+3.
+\]
+
+The remaining intervals are defined by the coefficients in
+Table~\ref{tab:spline_coefficients}.
+
+% ------------------------------------------------------------
+% 3.3 FIGURE
+% ------------------------------------------------------------
+
+\subsection{Graphical Results}
+
+Figure~\ref{fig:interpolation} presents the generated comparison between
+the Lagrange polynomial and the natural cubic spline.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{interpolation_plot.pdf}
-\caption{Comparison of Lagrange and Cubic Spline Interpolation Methods}
+\includegraphics[width=0.92\textwidth]{interpolation_plot.pdf}
+\caption{
+Lagrange Polynomial and Natural Cubic Spline Interpolation
+}
 \label{fig:interpolation}
 \end{figure}
 
-\subsection{Analysis}
-\begin{itemize}
-    \item Lagrange interpolation passes exactly through all data points but exhibits oscillations.
-    \item Cubic spline provides a smoother approximation with continuous derivatives.
-    \item Natural cubic spline is more suitable for practical applications.
-\end{itemize}
+The figure provides a visual representation of the global polynomial
+behavior and the piecewise spline approximation.
+
+% ------------------------------------------------------------
+% 3.4 DISCUSSION
+% ------------------------------------------------------------
+
+\subsection{Discussion}
+
+The two methods satisfy the same interpolation constraints but use different
+mathematical constructions.
+
+The Lagrange method produces one polynomial over the entire interval. This
+global structure is convenient for a small number of nodes, but increasing
+the polynomial degree can introduce oscillatory behavior and can make the
+approximation sensitive to the node distribution.
+
+The spline method instead uses local cubic pieces. The smoothness
+constraints connect the individual pieces, while the low degree of each
+piece limits the amount of global variation. This local structure is one
+reason cubic splines are widely used for practical interpolation
+\cite{burden2010}.
+
+It is important to note that the present experiment contains only six
+points. Therefore, the figure demonstrates the behavior of the two methods
+for this particular dataset and should not be interpreted as a universal
+benchmark.
+
+% ============================================================
+% 4. PROJECT 2
+% ============================================================
 
 \newpage
 
-\section{Project 2: Excel Data Analysis}
+\section{Project 2: Excel-Based Algorithm Runtime Analysis}
 
-\subsection{Introduction}
-This section analyzes runtime data of three algorithms for different data sizes ranging from 100KB to 600KB.
+\subsection{Problem Formulation}
 
-\subsection{Data Description}
-Table 3 shows the runtime measurements for three algorithms.
+The second project analyzes execution-time measurements for three
+algorithms at different input sizes. The original dataset contains six
+observations between $100$KB and $600$KB.
+
+The computational workflow reads the Excel workbook, validates the
+columns, performs numerical conversion and statistical analysis, generates
+three visualization types, and finally extends the dataset with a required
+$700$KB observation.
+
+\subsection{Original Dataset}
 
 \begin{table}[H]
 \centering
-\caption{Algorithm Runtime Data}
-\label{tab:runtime_data}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Data Size (KB)} & \textbf{Algorithm 1} & \textbf{Algorithm 2} & \textbf{Algorithm 3} \\
-\hline
-100 & 50 & 200 & 100 \\
-200 & 55 & 220 & 200 \\
-300 & 60 & 240 & 300 \\
-400 & 65 & 260 & 400 \\
-500 & 70 & 280 & 500 \\
-600 & 75 & 300 & 600 \\
-\hline
+\caption{Original Algorithm Runtime Dataset}
+\label{tab:runtime}
+
+\begin{tabular}{c|ccc}
+\toprule
+\textbf{Data Size}
+& \textbf{Algorithm 1}
+& \textbf{Algorithm 2}
+& \textbf{Algorithm 3} \\
+\midrule
+100KB & 50 & 200 & 100 \\
+200KB & 55 & 220 & 200 \\
+300KB & 60 & 240 & 300 \\
+400KB & 65 & 260 & 400 \\
+500KB & 70 & 280 & 500 \\
+600KB & 75 & 300 & 600 \\
+\bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Bar Chart}
-Figure 2 shows the bar chart comparison of algorithm runtimes.
+The dataset contains only a small number of observations. Consequently,
+the purpose of the analysis is descriptive rather than a formal
+determination of asymptotic algorithmic complexity.
+
+% ------------------------------------------------------------
+% BAR
+% ------------------------------------------------------------
+
+\subsection{Original Bar Chart}
+
+The bar chart provides a direct comparison of execution times.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{bar_chart.pdf}
-\caption{Comparison of Algorithm Run Times (Bar Chart)}
-\label{fig:bar_chart}
+\includegraphics[width=0.92\textwidth]{bar_chart.pdf}
+\caption{
+Algorithm Runtime Comparison -- Original Dataset
+}
+\label{fig:bar_original}
 \end{figure}
 
-\subsection{Statistical Analysis}
-Table 4 provides the statistical summary for each algorithm.
+Algorithm 1 has the smallest runtime for every supplied input size,
+whereas Algorithm 3 has the largest runtime at the larger input sizes.
+
+% ------------------------------------------------------------
+% LINE
+% ------------------------------------------------------------
+
+\subsection{Original Line Chart}
+
+The line chart emphasizes how runtime changes with input size.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{line_chart.pdf}
+\caption{
+Algorithm Runtime Trends -- Original Dataset
+}
+\label{fig:line_original}
+\end{figure}
+
+All three algorithms exhibit increasing runtime as the input size increases.
+Over the observed range, the measurements are approximately linear.
+
+It would not be statistically or theoretically justified to infer an exact
+asymptotic complexity class from these seven or fewer observations alone.
+
+% ------------------------------------------------------------
+% BOX
+% ------------------------------------------------------------
+
+\subsection{Original Box Plot}
+
+The box plot summarizes the distribution of the observed runtimes.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{box_plot.pdf}
+\caption{
+Runtime Distribution -- Original Dataset
+}
+\label{fig:box_original}
+\end{figure}
+
+Algorithm 3 exhibits the largest spread, which is consistent with its
+larger range and standard deviation.
+
+% ------------------------------------------------------------
+% STATISTICS
+% ------------------------------------------------------------
+
+\subsection{Descriptive Statistics}
+
+The calculated statistics are presented in
+Table~\ref{tab:statistics}.
 
 \begin{table}[H]
 \centering
-\caption{Statistical Summary}
-\label{tab:stats}
-\begin{tabular}{|l|c|c|c|}
-\hline
-\textbf{Statistic} & \textbf{Algorithm 1} & \textbf{Algorithm 2} & \textbf{Algorithm 3} \\
-\hline
+\caption{Descriptive Statistics for the Original Dataset}
+\label{tab:statistics}
+
+\begin{tabular}{l|ccc}
+\toprule
+\textbf{Statistic}
+& \textbf{Algorithm 1}
+& \textbf{Algorithm 2}
+& \textbf{Algorithm 3} \\
+\midrule
 Mean & 62.50 & 250.00 & 350.00 \\
 Median & 62.50 & 250.00 & 350.00 \\
-Standard Deviation & 9.35 & 37.42 & 187.08 \\
+Sample Std. Dev. & 9.35 & 37.42 & 187.08 \\
 Minimum & 50.00 & 200.00 & 100.00 \\
 Maximum & 75.00 & 300.00 & 600.00 \\
 Range & 25.00 & 100.00 & 500.00 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
-The mean runtime for Algorithm 2 is:
+The sample standard deviation is
+
 \[
-\bar{x} = \frac{200 + 220 + 240 + 260 + 280 + 300}{6} = 250 \text{ seconds}
+s=
+\sqrt{
+\frac{1}{n-1}
+\sum_{i=1}^{n}
+(x_i-\bar{x})^2
+}.
 \]
 
-\subsection{Analysis}
-\begin{itemize}
-    \item Algorithm 1 is the most efficient with linear growth.
-    \item Algorithm 2 shows consistent linear growth.
-    \item Algorithm 3 shows exponential-like growth and is not suitable for large datasets.
-\end{itemize}
+Algorithm 3 therefore exhibits considerably greater variability within the
+observed sample.
+
+% ------------------------------------------------------------
+% MEAN
+% ------------------------------------------------------------
+
+\subsection{Mean Runtime of Algorithm 2}
+
+The required mean for Algorithm 2 over the original $100$--$600$KB range
+is
+
+\[
+\bar{x}
+=
+\frac{
+200+220+240+260+280+300
+}{6}
+=
+250.
+\]
+
+Hence,
+
+\begin{resultbox}
+\[
+\boxed{
+\bar{x}_{\mathrm{Algorithm\ 2}}
+=
+250\text{ seconds}
+}
+\]
+\end{resultbox}
+
+This calculation intentionally excludes the later $700$KB observation.
+
+% ------------------------------------------------------------
+% 700KB
+% ------------------------------------------------------------
+
+\subsection{Automatic Extension of the Dataset}
+
+The project requires the addition of the following observation:
+
+\begin{table}[H]
+\centering
+\caption{Added $700$KB Observation}
+\label{tab:700}
+
+\begin{tabular}{c|ccc}
+\toprule
+\textbf{Data Size}
+& \textbf{Algorithm 1}
+& \textbf{Algorithm 2}
+& \textbf{Algorithm 3} \\
+\midrule
+700KB & 80 & 320 & 700 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The implementation checks whether a $700$KB observation already exists
+before inserting it. This prevents duplicate observations when the program
+is executed repeatedly.
+
+% ------------------------------------------------------------
+% UPDATED BAR
+% ------------------------------------------------------------
+
+\subsection{Updated Bar Chart}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{bar_chart_updated.pdf}
+\caption{
+Algorithm Runtime Comparison -- Updated Dataset
+}
+\label{fig:bar_updated}
+\end{figure}
+
+The new observation extends the existing runtime trend without changing the
+previous measurements.
+
+% ------------------------------------------------------------
+% UPDATED LINE
+% ------------------------------------------------------------
+
+\subsection{Updated Line Chart}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{line_chart_updated.pdf}
+\caption{
+Algorithm Runtime Trends -- Updated Dataset
+}
+\label{fig:line_updated}
+\end{figure}
+
+The additional point continues the approximately linear empirical trend
+observed in the original measurements.
+
+% ------------------------------------------------------------
+% UPDATED BOX
+% ------------------------------------------------------------
+
+\subsection{Updated Box Plot}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{box_plot_updated.pdf}
+\caption{
+Runtime Distribution -- Updated Dataset
+}
+\label{fig:box_updated}
+\end{figure}
+
+The new observation increases the observed maximum and range for the
+algorithms, most notably for Algorithm 3.
+
+% ------------------------------------------------------------
+% DISCUSSION
+% ------------------------------------------------------------
+
+\subsection{Runtime Interpretation}
+
+The measurements indicate three distinct empirical performance levels.
+
+Algorithm 1 is consistently the fastest of the three algorithms in the
+observed range. Algorithm 2 has a larger runtime but maintains a regular
+increase with input size. Algorithm 3 produces the largest values at the
+higher input sizes.
+
+However, these observations should not be converted directly into
+asymptotic complexity statements. The theoretical complexity of an
+algorithm depends on the algorithmic operations and their scaling with
+input size, not merely on a small number of measured execution times.
+
+Therefore, the appropriate conclusion from this dataset is that the
+algorithms demonstrate different empirical runtime trends over the tested
+range. A stronger complexity analysis would require repeated measurements,
+larger input ranges, controlled hardware conditions, and knowledge of the
+underlying algorithms.
+
+% ============================================================
+% 5. PROJECT 3
+% ============================================================
 
 \newpage
 
 \section{Project 3: Numerical Integration}
 
-\subsection{Introduction}
-This section computes the integral of $f(x) = e^{x^2}$ over $[0,1]$ using three methods: Trapezoidal Rule, Simpson's Rule, and Gaussian Quadrature.
+\subsection{Problem Formulation}
 
-\subsection{Mathematical Background}
-The integral to be evaluated is:
+The third project evaluates
+
 \[
-I = \int_0^1 e^{x^2} dx
+I=
+\int_0^1e^{x^2}\,dx.
 \]
 
-The exact value is:
+The integrand
+
 \[
-I = 1.4626517459071816
+f(x)=e^{x^2}
 \]
 
-\subsection{Trapezoidal Rule}
+is smooth on $[0,1]$, but it does not possess an elementary
+antiderivative. Numerical quadrature is therefore a natural computational
+approach.
+
+The following methods are compared:
+
+\begin{enumerate}
+    \item Composite trapezoidal rule.
+    \item Composite Simpson's rule.
+    \item Gauss--Legendre quadrature.
+\end{enumerate}
+
+The comparison emphasizes convergence and absolute error.
+
+% ------------------------------------------------------------
+% REFERENCE
+% ------------------------------------------------------------
+
+\subsection{Reference Value}
+
+Because no elementary antiderivative is available, the project uses a
+high-accuracy numerical value computed using
+\texttt{scipy.integrate.quad} as a reference. The SciPy documentation
+describes \texttt{quad} as a definite-integration routine based on the
+QUADPACK library \cite{scipy_quad,piessens1983}.
+
+The reference value obtained is
+
 \[
-\int_a^b f(x) dx \approx \frac{h}{2} \left[f(a) + f(b) + 2\sum_{i=1}^{n-1} f(x_i)\right]
+\boxed{
+I_{\mathrm{ref}}
+\approx
+1.462651745907181
+}
 \]
 
-\subsection{Simpson's Rule}
+This quantity is a high-accuracy numerical reference and is not claimed to
+be an elementary exact analytical value.
+
+% ------------------------------------------------------------
+% TRAPEZOIDAL
+% ------------------------------------------------------------
+
+\subsection{Composite Trapezoidal Rule}
+
+For $n$ equally spaced subintervals,
+
 \[
-\int_a^b f(x) dx \approx \frac{h}{3} \left[f(a) + f(b) + 4\sum_{i=1}^{n/2} f(x_{2i-1}) + 2\sum_{i=1}^{n/2-1} f(x_{2i})\right]
+h=\frac{b-a}{n}.
 \]
 
-\subsection{Gaussian Quadrature}
+The composite trapezoidal approximation is
+
 \[
-\int_a^b f(x) dx \approx \frac{b-a}{2} \sum_{i=1}^{n} w_i f\left(\frac{b-a}{2}x_i + \frac{a+b}{2}\right)
+T_n
+=
+\frac{h}{2}
+\left[
+f(a)+f(b)
++
+2\sum_{i=1}^{n-1}f(x_i)
+\right].
 \]
 
-\subsection{Results}
-Table 5 compares the results of all three methods.
+For sufficiently smooth functions, the global truncation error is of
+order
+
+\[
+O(h^2)
+\]
+
+\cite{burden2010,chapra2015}.
+
+% ------------------------------------------------------------
+% SIMPSON
+% ------------------------------------------------------------
+
+\subsection{Composite Simpson's Rule}
+
+For even $n$,
+
+\[
+S_n
+=
+\frac{h}{3}
+\left[
+f(a)+f(b)
++
+4\sum_{\substack{i=1\\i\text{ odd}}}^{n-1}
+f(x_i)
++
+2\sum_{\substack{i=2\\i\text{ even}}}^{n-2}
+f(x_i)
+\right].
+\]
+
+For sufficiently smooth functions, the global truncation error is of order
+
+\[
+O(h^4),
+\]
+
+which explains the faster convergence observed in the experiment
+\cite{burden2010,chapra2015}.
+
+% ------------------------------------------------------------
+% GAUSSIAN
+% ------------------------------------------------------------
+
+\subsection{Gauss--Legendre Quadrature}
+
+Gaussian quadrature approximates an integral by selecting nodes and weights
+that provide high-order accuracy.
+
+After mapping the standard interval $[-1,1]$ to $[a,b]$,
+
+\[
+x=
+\frac{b-a}{2}t+
+\frac{a+b}{2},
+\]
+
+the approximation is
+
+\[
+I
+\approx
+\frac{b-a}{2}
+\sum_{i=1}^{n}
+w_i
+f
+\left(
+\frac{b-a}{2}t_i+
+\frac{a+b}{2}
+\right).
+\]
+
+For the implementation, Gauss--Legendre nodes and weights are used. The
+method is particularly effective for smooth integrands
+\cite{press2007,chapra2015}.
+
+% ------------------------------------------------------------
+% RESULTS
+% ------------------------------------------------------------
+
+\subsection{Trapezoidal and Simpson Results}
+
+The numerical results for increasing numbers of subintervals are shown in
+Table~\ref{tab:trap_simpson}.
 
 \begin{table}[H]
 \centering
-\caption{Comparison of Numerical Integration Methods}
-\label{tab:integration}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Method} & \textbf{Result} & \textbf{Error} & \textbf{Notes} \\
-\hline
-Exact Value & 1.462651745907 & - & scipy.quad \\
-Trapezoidal (n=1024) & 1.462651778971 & 3.31e-08 & Slow convergence \\
-Simpson (n=1024) & 1.462651745907 & 2.22e-15 & Very accurate \\
-Gaussian (n=10) & 1.462651745907 & 1.11e-15 & Excellent accuracy \\
-\hline
+\caption{Convergence of Trapezoidal and Simpson Methods}
+\label{tab:trap_simpson}
+
+\begin{tabular}{r|cc}
+\toprule
+\textbf{$n$}
+& \textbf{Trapezoidal}
+& \textbf{Simpson} \\
+\midrule
+2    & 1.5715831655 & 1.4757305825 \\
+4    & 1.4906788617 & 1.4637107604 \\
+8    & 1.4697122764 & 1.4627234147 \\
+16   & 1.4644203101 & 1.4626563214 \\
+32   & 1.4630941026 & 1.4626520334 \\
+64   & 1.4627623486 & 1.4626517639 \\
+128  & 1.4626793974 & 1.4626517470 \\
+256  & 1.4626586588 & 1.4626517460 \\
+512  & 1.4626534741 & 1.4626517459 \\
+1024 & 1.4626521780 & 1.4626517459 \\
+\bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Convergence Analysis}
-Figure 3 shows the convergence behavior of all three methods.
+At $n=1024$,
+
+\[
+T_{1024}
+\approx
+1.4626521780
+\]
+
+and
+
+\[
+S_{1024}
+\approx
+1.4626517459.
+\]
+
+Using
+
+\[
+E_n=
+|I_n-I_{\mathrm{ref}}|,
+\]
+
+the approximate errors are
+
+\[
+E_T
+\approx
+4.32\times10^{-7},
+\]
+
+and
+
+\[
+E_S
+\approx
+4.32\times10^{-10}.
+\]
+
+Thus, for this problem and this subdivision level, Simpson's method is
+approximately three orders of magnitude more accurate than the
+trapezoidal approximation.
+
+% ------------------------------------------------------------
+% GAUSSIAN RESULTS
+% ------------------------------------------------------------
+
+\subsection{Gaussian Quadrature Results}
+
+\begin{table}[H]
+\centering
+\caption{Convergence of Gauss--Legendre Quadrature}
+\label{tab:gaussian}
+
+\begin{tabular}{r|cc}
+\toprule
+\textbf{Number of Points}
+& \textbf{Approximation}
+& \textbf{Absolute Error} \\
+\midrule
+2  & 1.454167889239 & $8.48\times10^{-3}$ \\
+3  & 1.462409711477 & $2.42\times10^{-4}$ \\
+4  & 1.462646815657 & $4.93\times10^{-6}$ \\
+5  & 1.462651668019 & $7.79\times10^{-8}$ \\
+6  & 1.462651744904 & $1.00\times10^{-9}$ \\
+8  & 1.462651745907 & $1.02\times10^{-13}$ \\
+10 & 1.462651745907 & $4.44\times10^{-16}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The error decreases extremely rapidly as the number of quadrature points
+increases.
+
+% ------------------------------------------------------------
+% FIGURE
+% ------------------------------------------------------------
+
+\subsection{Graphical Convergence Analysis}
+
+The generated convergence comparison is shown in
+Figure~\ref{fig:integration}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{integral_comparison.pdf}
-\caption{Convergence Comparison of Integration Methods}
-\label{fig:integral}
+\includegraphics[width=0.92\textwidth]{integral_comparison.pdf}
+\caption{
+Numerical Integration Comparison and Convergence
+}
+\label{fig:integration}
 \end{figure}
 
-\subsection{Analysis}
-\begin{itemize}
-    \item Trapezoidal Rule: Simple but slow convergence ($O(n^{-2})$).
-    \item Simpson's Rule: Fast convergence ($O(n^{-4})$).
-    \item Gaussian Quadrature: Most efficient with only 10 points needed.
-\end{itemize}
+The graphical output complements the numerical tables by illustrating how
+the approximations approach the reference value.
+
+% ------------------------------------------------------------
+% COMPARISON
+% ------------------------------------------------------------
+
+\subsection{Method Comparison}
+
+\begin{table}[H]
+\centering
+\caption{Summary of Numerical Integration Methods}
+\label{tab:integration_summary}
+
+\begin{tabular}{p{3.1cm}|p{3.4cm}|p{3.4cm}}
+\toprule
+\textbf{Method}
+&
+\textbf{Primary Strength}
+&
+\textbf{Main Consideration}
+\\
+\midrule
+
+Trapezoidal Rule
+&
+Simple and robust implementation
+&
+Second-order convergence for smooth functions
+\\
+
+Simpson's Rule
+&
+Higher-order accuracy for smooth functions
+&
+Requires an even number of subintervals
+\\
+
+Gauss--Legendre
+&
+Very high accuracy with relatively few evaluations
+&
+Requires appropriate nodes and weights
+\\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the specific smooth function studied here, Gaussian quadrature reaches
+near machine precision with ten points. This does not imply that it will
+always dominate every other integration method; performance depends on the
+integrand, interval, required tolerance, and computational constraints.
+
+% ============================================================
+% 6. CROSS-PROJECT DISCUSSION
+% ============================================================
 
 \newpage
 
-\section{Conclusion}
+\section{Cross-Project Discussion}
 
-This project successfully implemented and compared various numerical methods:
+The three experiments address different mathematical tasks but illustrate
+several common principles of numerical computing.
 
-\subsection{Interpolation Methods}
+\subsection{Approximation and Reference Values}
+
+Interpolation provides an exact fit at known nodes but does not guarantee
+that the interpolating function equals an unknown underlying function
+between those nodes.
+
+Numerical integration introduces a different approximation problem. The
+computed quadrature result is an approximation to a definite integral, and
+the present experiment uses a high-accuracy numerical computation as a
+reference.
+
+Consequently, numerical analysis requires careful distinction between
+mathematical exactness and numerical accuracy.
+
+\subsection{Convergence as a Diagnostic Tool}
+
+A single numerical result does not provide enough information to assess the
+quality of a numerical method. Convergence experiments are more informative
+because they reveal how the result changes when the computational
+resolution is increased.
+
+The integration experiment demonstrates this directly. The trapezoidal
+and Simpson approximations progressively approach the reference value,
+while Gaussian quadrature achieves rapid error reduction as the number of
+nodes increases.
+
+\subsection{Global Versus Local Approximation}
+
+The interpolation experiment illustrates the difference between a global
+representation and a local representation.
+
+Lagrange interpolation produces a single global polynomial. Cubic spline
+interpolation instead constructs local cubic pieces joined through
+smoothness constraints.
+
+This distinction is important in numerical modeling because local methods
+can reduce the influence of distant observations and avoid some undesirable
+behavior associated with high-degree global approximations.
+
+\subsection{Data Analysis as a Numerical Workflow}
+
+The Excel experiment demonstrates that practical numerical computing
+includes considerably more than implementing mathematical formulas.
+
+A reliable computational workflow should also address:
+
 \begin{itemize}
-    \item Lagrange interpolation provides exact fit but suffers from oscillations.
-    \item Cubic spline interpolation offers smoother and more stable results.
-    \item Natural cubic spline is recommended for practical applications.
+    \item input validation,
+    \item data-type consistency,
+    \item reproducible transformations,
+    \item statistical summaries,
+    \item visualization,
+    \item automated output generation, and
+    \item protection against duplicate or inconsistent updates.
 \end{itemize}
 
-\subsection{Data Analysis}
-\begin{itemize}
-    \item Algorithm 1 is most efficient with linear growth.
-    \item Algorithm 2 shows consistent linear growth.
-    \item Algorithm 3 has exponential growth and is not recommended.
-\end{itemize}
+The automatic $700$KB insertion is a small but concrete example of this
+principle.
+
+% ============================================================
+% 7. LIMITATIONS
+% ============================================================
+
+\section{Limitations and Future Work}
+
+\subsection{Interpolation}
+
+Only six observations are available. Future experiments could compare the
+methods using larger datasets and different node distributions, including
+uniformly spaced and non-uniformly spaced nodes.
+
+The interpolation error could also be measured against a known analytical
+function rather than only comparing the resulting curves.
+
+\subsection{Runtime Analysis}
+
+The runtime dataset is intentionally small and therefore cannot establish
+formal asymptotic complexity.
+
+A more rigorous performance study would repeat each algorithm multiple
+times, use a wider range of input sizes, control system conditions, report
+measurement variability, and investigate the relationship between input size
+and runtime using appropriate statistical models.
 
 \subsection{Numerical Integration}
-\begin{itemize}
-    \item Gaussian quadrature offers the best accuracy-to-cost ratio.
-    \item Simpson's rule is highly accurate for smooth functions.
-    \item Trapezoidal rule is simple but requires many subdivisions.
-\end{itemize}
 
-\section{GitHub Repository}
-The complete project code is available at:
+The function $e^{x^2}$ is smooth and well behaved on the selected interval.
+Additional experiments involving discontinuities, singularities,
+oscillatory functions, or rapidly varying functions would provide a more
+comprehensive assessment of the numerical integration methods.
+
+% ============================================================
+% 8. CONCLUSION
+% ============================================================
+
+\section{Conclusion}
+
+This project implemented and evaluated numerical techniques for
+interpolation, computational data analysis, and numerical integration.
+
+The interpolation experiment showed that both Lagrange interpolation and
+natural cubic splines can reproduce the supplied observations exactly, but
+their underlying constructions differ. Lagrange interpolation provides a
+single global polynomial, whereas cubic splines use locally defined cubic
+pieces connected through smoothness conditions.
+
+The Excel analysis demonstrated a reproducible computational workflow for
+loading, validating, analyzing, visualizing, and updating structured data.
+The three visualization techniques provide complementary perspectives:
+bar charts emphasize direct comparison, line charts emphasize trends, and
+box plots summarize distributions.
+
+The numerical integration experiment provided the clearest quantitative
+comparison of convergence. Simpson's rule substantially outperformed the
+trapezoidal rule at the tested subdivision levels, while Gauss--Legendre
+quadrature achieved extremely high accuracy using a small number of
+evaluation points for the smooth integrand under consideration.
+
+More broadly, the project demonstrates that effective numerical computing
+requires a combination of mathematical theory, careful implementation,
+quantitative error analysis, visualization, and reproducibility. The
+results should therefore be interpreted not merely as numerical answers,
+but as evidence of the computational behavior of the implemented methods
+under clearly specified experimental conditions.
+
+% ============================================================
+% 9. REPOSITORY
+% ============================================================
+
+\newpage
+
+\section{Source Code and Repository}
+
+The complete implementation, input data, generated outputs, and project
+documentation are maintained in the following GitHub repository:
+
 \begin{center}
-\href{https://github.com/AradCharon/InterpolationExcelIntegration.git}{\textbf{https://github.com/AradCharon/InterpolationExcelIntegration.git}}
+
+\href{https://github.com/AradCharon/numerical-methods-toolkit}
+{\Large\textbf{\textcolor{primary}{
+github.com/AradCharon/numerical-methods-toolkit
+}}}
+
 \end{center}
 
-\section{References}
-\begin{enumerate}
-    \item Burden, R.L. and Faires, J.D. (2010). Numerical Analysis, 9th Edition. Brooks/Cole.
-    \item Press, W.H., Teukolsky, S.A., Vetterling, W.T. and Flannery, B.P. (2007). Numerical Recipes, 3rd Edition. Cambridge University Press.
-    \item Chapra, S.C. and Canale, R.P. (2015). Numerical Methods for Engineers, 7th Edition. McGraw-Hill.
-\end{enumerate}
+The repository contains the three project implementations together with
+their generated numerical results and visualization files.
+
+% ============================================================
+% REFERENCES
+% ============================================================
+
+\newpage
+
+\addcontentsline{toc}{section}{References}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 
 \end{document}
